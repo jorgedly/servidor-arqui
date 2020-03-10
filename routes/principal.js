@@ -10,17 +10,17 @@ const conn = mysql.createPool({
 });
 
 router.post("/", (req, res) => {
-    const { sensor, valor, fecha, hora } = req.body;
-    const date = fecha.split('.').join('-');
-    const time = hora.split('.').join(':');
-    const query = `INSERT INTO DatoSensor (valor, fecha, hora, id) VALUES ('${valor}', '${date}', '${time}', '${sensor}')`;
+    const { sensor, valor } = req.body;
+    const date = new Date();
+    const fechahora = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${fechahora}', '${sensor}')`;
     const sql = conn.query(query, (err, results) => {
         res.json();
     });
 });
 
 router.get("/", (req, res) => {
-    const query = `SELECT valor, fecha, hora, nombre FROM TipoSensor, DatoSensor WHERE TipoSensor.id=DatoSensor.id;`;
+    const query = `SELECT valor, fechahora, nombre FROM TipoSensor, DatoSensor WHERE TipoSensor.id=DatoSensor.id;`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
