@@ -14,12 +14,10 @@ router.post("/", (req, res) => {
     const date = new Date();
     const fechahora = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${fechahora}', '${sensor}')`;
-    console.log('ini');
+    console.log(`sensor: ${sensor}, valor:${valor}, fechahora: ${fechahora}`);
     const sql = conn.query(query, (err, results) => {
-        console.log('fin');
         res.json();
     });
-    console.log('fin2');
 });
 
 router.get("/", (req, res) => {
