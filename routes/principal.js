@@ -38,8 +38,16 @@ router.get("/:id", (req, res) => {
 router.get("/:id/:fecha", (req, res) => {
     const { id, fecha } = req.params;
     console.log(`${id} - ${fecha}`);
-    //const query = `SELECT DISTINCT DATE_FORMAT(HOUR(hora), '%k:%i:%S') hora FROM DatoSensor WHERE id='${id}' AND DATE(fechahora)='${fecha}';`;
     const query = `SELECT DISTINCT HOUR(fechahora) hora from DatoSensor WHERE id='${id}' and DATE(fechahora)='${fecha}' ORDER BY hora ASC`;
+    const sql = conn.query(query, (err, results) => {
+        res.json(results);
+    });
+});
+
+router.get("/:id/:fecha/:hora", (req, res) => {
+    const { id, fecha, hora } = req.params;
+    console.log(`${id} - ${fecha} - ${hora}`);
+    const query = `SELECT MINUTE(fechahora) minuto, valor from DatoSensor WHERE id='${id}' and DATE(fechahora)='${fecha}' and HOUR(fechahora)='${hora}' order by minuto asc;`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
