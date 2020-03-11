@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
     const { id } = req.params;
-    const query = `SELECT DISTINCT DATE_FORMAT(DATE(fechahora), '%d-%m-%Y') fecha FROM DatoSensor WHERE id='${id}';`;
+    const query = `SELECT DISTINCT DATE_FORMAT(DATE(fechahora), '%Y-%m-%d') fecha FROM DatoSensor WHERE id='${id}';`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
