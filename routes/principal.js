@@ -14,6 +14,7 @@ router.post("/", (req, res) => {
     const rfecha = fecha.split('.').join('-');
     const rhora = hora.split('.').join(':');
     const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${rfecha} ${rhora}', '${sensor}')`;
+    console.log(query);
     const sql = conn.query(query, (err, results) => {
         res.json("BIEN!");
     });
