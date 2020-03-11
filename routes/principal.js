@@ -27,4 +27,12 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+    const { id } = req.params;
+    const query = `SELECT DISTINCT DATE(fechahora) fecha FROM DatoSensor WHERE id='${id}';`;
+    const sql = conn.query(query, (err, results) => {
+        res.json(results);
+    });
+});
+
 module.exports = router;
