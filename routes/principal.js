@@ -35,4 +35,12 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.get("/:id/:fecha", (req, res) => {
+    const { id, fecha } = req.params;
+    const query = `SELECT DISTINCT DATE_FORMAT(HOUR(hora), '%k:%i:%S') hora FROM DatoSensor WHERE id='${id}' AND DATE(fechahora)='${fecha}';`;
+    const sql = conn.query(query, (err, results) => {
+        res.json(results);
+    });
+});
+
 module.exports = router;
