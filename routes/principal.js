@@ -13,9 +13,7 @@ router.post("/", (req, res) => {
     const { sensor, valor, fecha, hora } = req.body;
     const rfecha = fecha.split('.').join('-');
     const rhora = hora.split('.').join(':');
-    const fechahora = `${rfecha} ${rhora}`;
-    const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${fechahora}', '${sensor}')`;
-    console.log(`sensor: ${sensor}, valor:${valor}, fecha: ${fecha} hora: ${hora}`);
+    const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${rfecha} ${rhora}', '${sensor}')`;
     const sql = conn.query(query, (err, results) => {
         res.json("BIEN!");
     });
@@ -38,7 +36,6 @@ router.get("/:id", (req, res) => {
 
 router.get("/:id/:fecha", (req, res) => {
     const { id, fecha } = req.params;
-    console.log(`${id} - ${fecha}`);
     const query = `SELECT DISTINCT HOUR(fechahora) hora from DatoSensor WHERE id='${id}' and DATE(fechahora)='${fecha}' ORDER BY hora ASC`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
@@ -47,7 +44,6 @@ router.get("/:id/:fecha", (req, res) => {
 
 router.get("/:id/:fecha/:hora", (req, res) => {
     const { id, fecha, hora } = req.params;
-    console.log(`${id} - ${fecha} - ${hora}`);
     const query = `SELECT MINUTE(fechahora) minuto, valor from DatoSensor WHERE id='${id}' and DATE(fechahora)='${fecha}' and HOUR(fechahora)='${hora}' order by minuto asc;`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
