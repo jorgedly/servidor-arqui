@@ -10,11 +10,12 @@ const conn = mysql.createPool({
 });
 
 router.post("/", (req, res) => {
-    const { sensor, valor } = req.body;
-    const date = new Date();
-    const fechahora = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    const { sensor, valor, fecha, hora } = req.body;
+    const rfecha = fecha.split('.').join('-');
+    const rhora = hora.split('.').join(':');
+    const fechahora = `${rfecha} ${rhora}`;
     const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${fechahora}', '${sensor}')`;
-    console.log(`sensor: ${sensor}, valor:${valor}, fechahora: ${fechahora}`);
+    console.log(`sensor: ${sensor}, valor:${valor}, fecha: ${fecha} hora: ${hora}`);
     const sql = conn.query(query, (err, results) => {
         res.json("BIEN!");
     });
