@@ -11,10 +11,9 @@ const conn = mysql.createPool({
 
 router.post("/", (req, res) => {
     const { sensor, valor } = req.body;
-    const date = calcTime('Guatemala', '-6');
+    const date = calcTime('-6');
     const fecha = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${fecha}', '${sensor}')`;
-    console.log(query);
     const sql = conn.query(query, (err, results) => {
         res.json("BIEN!");
     });
@@ -51,7 +50,7 @@ router.get("/:id/:fecha/:hora", (req, res) => {
     });
 });
 
-function calcTime(city, offset) {
+function calcTime(offset) {
     const d = new Date();
     const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
     const convert = new Date(utc + (3600000 * offset));
