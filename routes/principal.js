@@ -11,6 +11,7 @@ const conn = mysql.createPool({
 
 router.post("/", (req, res) => {
     const { sensor, valor } = req.body;
+    console.log(req.body);
     const date = calcTime('-6');
     const fecha = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${fecha}', '${sensor}')`;
