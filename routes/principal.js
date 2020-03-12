@@ -33,17 +33,17 @@ router.get("/borrar", (req, res) => {
     });
 });
 
-router.get("/seleccion/:id", (req, res) => {
-    const { id } = req.params;
-    const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor WHERE id='${id}'`;
+router.get("/seleccion/:sensor", (req, res) => {
+    const { sensor } = req.params;
+    const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor, TipoSensor WHERE DatoSensor.id=TipoSensor.id AND TipoSensor.nombre='${sensor}'`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
 });
 
-router.get("/seleccion/:id/:fini/:hini/:ffin/:hfin", (req, res) => {
-    const { id, fini, hini, ffin, hfin } = req.params;
-    const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor WHERE id='${id}' AND DATE_FORMAT(fechahora, '%d-%m-%Y')='${fini}' AND DATE_FORMAT(fechahora, '%H:%i:%S')='${hini}' AND DATE_FORMAT(fechahora, '%d-%m-%Y')='${ffin}' AND DATE_FORMAT(fechahora, '%H:%i:%S')='${hfin}';`;
+router.get("/seleccion/:sensor/:fini/:hini/:ffin/:hfin", (req, res) => {
+    const { sensor, fini, hini, ffin, hfin } = req.params;
+    const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor, TipoSensor WHERE DatoSensor.id=TipoSensor.id AND TipoSensor.nombre='${sensor}' AND DATE_FORMAT(fechahora, '%d-%m-%Y')='${fini}' AND DATE_FORMAT(fechahora, '%H:%i:%S')='${hini}' AND DATE_FORMAT(fechahora, '%d-%m-%Y')='${ffin}' AND DATE_FORMAT(fechahora, '%H:%i:%S')='${hfin}';`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
