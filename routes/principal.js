@@ -20,7 +20,7 @@ router.post("/", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-    const query = `SELECT valor, fechahora, nombre FROM TipoSensor, DatoSensor WHERE TipoSensor.id=DatoSensor.id;`;
+    const query = `SELECT valor, fechahora, nombre FROM TipoSensor, DatoSensor WHERE TipoSensor.id=DatoSensor.id ORDER BY fechahora ASC;`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
