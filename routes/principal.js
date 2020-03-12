@@ -11,7 +11,6 @@ const conn = mysql.createPool({
 
 router.post("/", (req, res) => {
     const { sensor, valor } = req.body;
-    console.log(req.body);
     const date = calcTime('-6');
     const fecha = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const query = `INSERT INTO DatoSensor (valor, fechahora, id) VALUES ('${valor}', '${fecha}', '${sensor}')`;
@@ -27,34 +26,24 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/borrar", (req, res) => {
+    const query = `DELETE FROM DatoSensor;`;
+    const sql = conn.query(query, (err, results) => {
+        res.json();
+    });
+});
+
 router.get("/seleccion/:id", (req, res) => {
     const { id } = req.params;
-    console.log(id);
     const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor WHERE id='${id}'`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
 });
 
-router.get("/:id", (req, res) => {
-    const { id } = req.params;
-    const query = `SELECT DISTINCT DATE_FORMAT(DATE(fechahora), '%Y-%m-%d') fecha FROM DatoSensor WHERE id='${id}';`;
-    const sql = conn.query(query, (err, results) => {
-        res.json(results);
-    });
-});
-
-router.get("/:id/:fecha", (req, res) => {
-    const { id, fecha } = req.params;
-    const query = `SELECT DISTINCT HOUR(fechahora) hora from DatoSensor WHERE id='${id}' and DATE(fechahora)='${fecha}' ORDER BY hora ASC`;
-    const sql = conn.query(query, (err, results) => {
-        res.json(results);
-    });
-});
-
-router.get("/:id/:fecha/:hora", (req, res) => {
-    const { id, fecha, hora } = req.params;
-    const query = `SELECT MINUTE(fechahora) minuto, valor from DatoSensor WHERE id='${id}' and DATE(fechahora)='${fecha}' and HOUR(fechahora)='${hora}' order by minuto asc;`;
+router.get("/seleccion/:id/:fini/:hini/:ffin/:hfin", (req, res) => {
+    const { id, fini, hini, ffin, hfin } = req.params;
+    const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor WHERE id='${id}' AND DATE_FORMAT(fechahora, '%d-%m-%Y')='${fini}' AND DATE_FORMAT(fechahora, '%H:%i:%S')='${hini}' AND DATE_FORMAT(fechahora, '%d-%m-%Y')='${ffin}' AND DATE_FORMAT(fechahora, '%H:%i:%S')='${hfin}';`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
