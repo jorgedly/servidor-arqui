@@ -44,7 +44,7 @@ router.get("/seleccion/:sensor", (req, res) => {
 router.get("/seleccion/:sensor/:fini/:hini/:ffin/:hfin", (req, res) => {
     const { sensor, fini, hini, ffin, hfin } = req.params;
     console.log(req.params);
-    const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor, TipoSensor WHERE DatoSensor.id=TipoSensor.id AND TipoSensor.nombre='Inclinacion' AND fechahora BETWEEN '2020-03-${fini}' AND '2020-03-${ffin}' AND TIME(fechahora) BETWEEN TIME('${hini}') AND TIME('${hfin}');`;
+    const query = `SELECT valor value, DATE_FORMAT(fechahora, '%d-%m-%Y %H:%i:%S') name FROM DatoSensor, TipoSensor WHERE DatoSensor.id=TipoSensor.id AND TipoSensor.nombre='${sensor}' AND fechahora BETWEEN '2020-03-${fini} ${hini}' AND '2020-03-${ffin} ${hfin}';`;
     const sql = conn.query(query, (err, results) => {
         res.json(results);
     });
